@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "531716012277",
+    "firebase_url": "https://imbecility-notice.firebaseio.com",
+    "project_id": "imbecility-notice",
+    "storage_bucket": "imbecility-notice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531716012277:android:2951d9756287919a",
+        "android_client_info": {
+          "package_name": "com.report.lectureproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531716012277-1g12c9llhoan2obmjnhjsjqafcm4iidf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB76d4ukfa4EEubA2QkvOdBchggq5hBkg8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531716012277:android:ec77a55d9e8ea1e1",
+        "android_client_info": {
+          "package_name": "com.project.gpsapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531716012277-1g12c9llhoan2obmjnhjsjqafcm4iidf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB76d4ukfa4EEubA2QkvOdBchggq5hBkg8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531716012277:android:8c7ebb19bd3a21b3",
+        "android_client_info": {
+          "package_name": "com.example.kimdoyeop.ourfamilydefence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531716012277-1g12c9llhoan2obmjnhjsjqafcm4iidf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB76d4ukfa4EEubA2QkvOdBchggq5hBkg8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
