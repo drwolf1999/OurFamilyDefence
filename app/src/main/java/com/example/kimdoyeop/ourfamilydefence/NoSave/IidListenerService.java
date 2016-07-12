@@ -38,7 +38,7 @@ public class IidListenerService extends FirebaseInstanceIdService {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                Document doc = Jsoup.connect("http://thy2134.duckdns.org/").header("Content-Type", "Application/X-www-form-urlencoded").data("token", token).post();
+                Document doc = Jsoup.connect("http://thy2134.duckdns.org/pro.php").header("Content-Type", "Application/X-www-form-urlencoded").data("token", token).post();
                 return doc.text().contains("Success");
             } catch (Exception e) {
                 e.printStackTrace();

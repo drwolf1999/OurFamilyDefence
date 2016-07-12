@@ -1,7 +1,13 @@
 package com.example.kimdoyeop.ourfamilydefence.Save;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,6 +15,7 @@ import android.widget.Toast;
 import com.example.kimdoyeop.ourfamilydefence.NoSave.CalculateLocation;
 import com.example.kimdoyeop.ourfamilydefence.NoSave.GPSInfo;
 import com.example.kimdoyeop.ourfamilydefence.NoSave.NoSaveActivity;
+import com.example.kimdoyeop.ourfamilydefence.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -17,16 +24,23 @@ import com.google.firebase.messaging.RemoteMessage;
  */
 public class ReceiveLocation extends FirebaseMessagingService {
 
-    private static final String TAG = "ReceiveLocation";
+    private void sendNotification(String title, String body) {
+        Intent intent = new Intent(this, SaveActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        Double latitude = Double.valueOf(remoteMessage.getData().get("latitude"));
-        Double longitude = Double.valueOf(remoteMessage.getData().get("longitude"));
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        Log.d(TAG, "Location Received : " + latitude + "," + longitude);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title);
 
-        new CalculateLocation(getApplicationContext(), latitude, longitude);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notificationBuilder.build());
     }
 
 
