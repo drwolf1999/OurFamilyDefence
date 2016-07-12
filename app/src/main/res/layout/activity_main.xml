@@ -11,13 +11,6 @@
     tools:context="com.example.kimdoyeop.ourfamilydefence.MainActivity">
 
     <Button
-        android:id="@+id/Login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="로그인??" />
-
-    <Button
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -28,38 +28,41 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".Save.LoginActivity"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NoSave.NoSaveActivity" />
+        <activity android:name=".Save.SaveActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:label="@string/title_activity_sign_up"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".NoSave.ExampleActivity" />
 
         <service
-            android:name=".NoSave.ReceiveLocation"
+            android:name=".NoSave.GPSService"
+            android:exported="false"></service>
+        <service
+            android:name=".Save.GPSReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Save.ReceiveLocation"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dn.intent.RECIVE" />
             </intent-filter>
         </service>
-        <service
-            android:name=".NoSave.IidListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.DISTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".NoSave.NoSaveActivity" />
-        <activity android:name=".Save.SaveActivity" />
-        <activity
-            android:name=".Save.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"></activity>
 
         <uses-library android:name="com.google.android.maps" />
     </application>

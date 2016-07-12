@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.kimdoyeop.ourfamilydefence.NoSave.ExampleActivity;
 import com.example.kimdoyeop.ourfamilydefence.NoSave.NoSaveActivity;
-import com.example.kimdoyeop.ourfamilydefence.Save.LoginActivity;
 import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.Login).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
         findViewById(R.id.no_save).setOnClickListener(this);
     }
@@ -26,18 +25,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.Login:
-                Intent intent2 = new Intent(this, LoginActivity.class);
-                startActivity(intent2);
-                break;
-
             case R.id.save:
                 Intent intent = new Intent(this, SaveActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.no_save:
-                Intent intent1 = new Intent(this, NoSaveActivity.class);
+                Intent intent1 = new Intent(this, ExampleActivity.class);
                 startActivity(intent1);
                 break;
 

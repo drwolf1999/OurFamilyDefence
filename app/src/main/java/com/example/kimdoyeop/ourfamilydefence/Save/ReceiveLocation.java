@@ -1,9 +1,14 @@
-package com.example.kimdoyeop.ourfamilydefence.NoSave;
+package com.example.kimdoyeop.ourfamilydefence.Save;
 
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kimdoyeop.ourfamilydefence.NoSave.CalculateLocation;
+import com.example.kimdoyeop.ourfamilydefence.NoSave.GPSInfo;
+import com.example.kimdoyeop.ourfamilydefence.NoSave.NoSaveActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -13,9 +18,6 @@ import com.google.firebase.messaging.RemoteMessage;
 public class ReceiveLocation extends FirebaseMessagingService {
 
     private static final String TAG = "ReceiveLocation";
-
-    Context context;
-    Location location;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

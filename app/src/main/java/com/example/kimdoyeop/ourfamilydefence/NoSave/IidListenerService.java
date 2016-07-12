@@ -2,6 +2,7 @@ package com.example.kimdoyeop.ourfamilydefence.NoSave;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -19,11 +20,11 @@ public class IidListenerService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         String refreshTokten = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Token Refreshed : " + refreshTokten);
-        sendRegistrationToServer(refreshTokten);
+        sendTokenServer(refreshTokten);
     }
 
-    private void sendRegistrationToServer(String token) {
-
+    private void sendTokenServer(String token) {
+        new SendTokenTask(token).execute();
     }
 
     protected class SendTokenTask extends AsyncTask<Void, Void, Boolean> {
@@ -37,7 +38,7 @@ public class IidListenerService extends FirebaseInstanceIdService {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                Document doc = Jsoup.connect("").data().data().data().post();
+                Document doc = Jsoup.connect("http://thy2134.duckdns.org/").header("Content-Type", "Application/X-www-form-urlencoded").data("token", token).post();
                 return doc.text().contains("Success");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,13 +46,16 @@ public class IidListenerService extends FirebaseInstanceIdService {
             return false;
         }
 
-        protected void onPreExecute(Boolean aVoid) {
-            if (aVoid) {
-                Log.d(TAG, "TOKEN UPLOAD SUCESS");
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            String context = "";
+            if (aBoolean) {
+                context = "Successfully uploaded token";
             } else {
-                Log.d(TAG, "Token upload fail");
+                context = "Failed!!";
             }
-            super.onPreExecute();
+
+            Toast.makeText(getApplicationContext(), context, Toast.LENGTH_SHORT).show();
         }
     }
 }
