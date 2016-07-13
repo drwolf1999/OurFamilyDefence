@@ -45,30 +45,6 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".NoSave.ExampleActivity" />
 
-        <service
-            android:name=".NoSave.GPSService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-
-        </service>
-        <service
-            android:name=".Save.GPSReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".Save.ReceiveLocation"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dn.intent.RECIVE" />
-            </intent-filter>
-        </service>
-
         <uses-library android:name="com.google.android.maps" />
     </application>
 
