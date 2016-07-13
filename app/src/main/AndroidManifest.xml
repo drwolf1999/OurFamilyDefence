@@ -43,7 +43,23 @@
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"></activity>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".NoSave.ExampleActivity" />
+
+
+        <service
+            android:name=".GpsService.MessageReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".GpsService.IIDListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <uses-library android:name="com.google.android.maps" />
     </application>

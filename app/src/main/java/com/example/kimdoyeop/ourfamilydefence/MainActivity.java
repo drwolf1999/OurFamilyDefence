@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.kimdoyeop.ourfamilydefence.NoSave.ExampleActivity;
 import com.example.kimdoyeop.ourfamilydefence.NoSave.NoSaveActivity;
 import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.no_save:
-                Intent intent1 = new Intent(this, ExampleActivity.class);
+                Intent intent1 = new Intent(this, NoSaveActivity.class);
                 startActivity(intent1);
                 break;
 

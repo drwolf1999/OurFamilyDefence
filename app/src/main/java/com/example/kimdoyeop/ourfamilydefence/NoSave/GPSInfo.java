@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class GPSInfo extends Service implements LocationListener {
 
-    private final ExampleActivity mcontext;
+    private final NoSaveActivity mcontext;
 
     boolean isGPSEnabled = false;
     boolean isNetWorkEnabled = false;
@@ -37,7 +37,7 @@ public class GPSInfo extends Service implements LocationListener {
 
     protected LocationManager locationManager;
 
-    public GPSInfo(ExampleActivity context) {
+    public GPSInfo(NoSaveActivity context) {
         this.mcontext = context;
         getLocation();
     }
