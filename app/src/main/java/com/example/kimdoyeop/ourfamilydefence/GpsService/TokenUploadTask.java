@@ -32,7 +32,7 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            Document doc = Jsoup.connect("http://thy2134.duckdns.org/.php")
+            Document doc = Jsoup.connect("http://thy2134.duckdns.org/input_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
                     .data("token", token)
                     .data("self", self)

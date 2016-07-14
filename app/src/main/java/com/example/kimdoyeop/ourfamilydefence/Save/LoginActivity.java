@@ -300,9 +300,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                Document doc = Jsoup.connect("http://thy2134.duckdns.org/db_login.php")
+                Document doc = Jsoup.connect("http://thy2134.duckdns.org/db_login1.php")
                         .header("Content-type", "Application/X-www-form-urlencoded")
                         .data("username", mEmail)
+                        .data("password", mPassword)
                         .data("password", mPassword)
                         .post();
 
@@ -332,4 +333,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

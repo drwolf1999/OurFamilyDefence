@@ -36,7 +36,7 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            Document doc = Jsoup.connect("http://thy2134.duckdns.org/.php")
+            Document doc = Jsoup.connect("http://thy2134.duckdns.org/get_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
                     .data("address", receiver)
                     .post();

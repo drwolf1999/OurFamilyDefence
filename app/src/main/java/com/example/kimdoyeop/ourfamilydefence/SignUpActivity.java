@@ -29,6 +29,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -309,12 +313,17 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
+                Document doc = Jsoup.connect("http://thy2134.duckdns.org/sign_up.php")
+                        .header("Content-type", "Application/X-www-form-urlencoded")
+                        .data("id", mEmail)
+                        .data("pw", mPassword)
+                        .post();
                 Thread.sleep(2000);
+            } catch (IOException e) {
+                e.printStackTrace();
             } catch (InterruptedException e) {
-                return false;
+                e.printStackTrace();
             }
-
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -322,7 +331,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                     return pieces[1].equals(mPassword);
                 }
             }
-
             // TODO: register the new account here.
             return true;
         }
