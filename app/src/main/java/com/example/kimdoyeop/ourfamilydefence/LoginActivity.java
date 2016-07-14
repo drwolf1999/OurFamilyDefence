@@ -1,4 +1,4 @@
-package com.example.kimdoyeop.ourfamilydefence.Save;
+package com.example.kimdoyeop.ourfamilydefence;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,14 +19,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,10 +31,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.kimdoyeop.ourfamilydefence.MainActivity;
-import com.example.kimdoyeop.ourfamilydefence.R;
-import com.example.kimdoyeop.ourfamilydefence.SignUpActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -302,8 +295,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 Document doc = Jsoup.connect("http://thy2134.duckdns.org/db_login1.php")
                         .header("Content-type", "Application/X-www-form-urlencoded")
-                        .data("username", mEmail)
-                        .data("password", mPassword)
+                        .data("name", mEmail)
                         .data("password", mPassword)
                         .post();
 

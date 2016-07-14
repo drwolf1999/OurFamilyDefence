@@ -315,8 +315,8 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             try {
                 Document doc = Jsoup.connect("http://thy2134.duckdns.org/sign_up.php")
                         .header("Content-type", "Application/X-www-form-urlencoded")
-                        .data("id", mEmail)
-                        .data("pw", mPassword)
+                        .data("name", mEmail)
+                        .data("password", mPassword)
                         .post();
                 Thread.sleep(2000);
             } catch (IOException e) {
