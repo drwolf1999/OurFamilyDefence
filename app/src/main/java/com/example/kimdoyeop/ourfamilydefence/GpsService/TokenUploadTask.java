@@ -25,7 +25,7 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
         SharedPreferences prefs = mContext.getSharedPreferences("Token", mContext.MODE_PRIVATE);
         token = FirebaseInstanceId.getInstance().getToken();
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Nickname", self);
+        editor.putString("Address", self);
         editor.apply();
     }
 

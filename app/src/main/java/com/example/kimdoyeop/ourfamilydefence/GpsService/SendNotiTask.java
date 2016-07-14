@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     public static final String TAG = "SendNotiTask";
-    String nickname, receiver, token, type;
+    String address, receiver, token, type;
     Context mContext;
 
     public SendNotiTask(Context mContext, String receiver, String type) {
@@ -30,7 +30,7 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
         this.receiver = receiver;
         this.type = type;
         SharedPreferences prefs = mContext.getSharedPreferences("Token", mContext.MODE_PRIVATE);
-        nickname = prefs.getString("Nickname", "");
+        address = prefs.getString("Address", "");
     }
 
     @Override
@@ -38,12 +38,12 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
         try {
             Document doc = Jsoup.connect("http://thy2134.duckdns.org/db_get_token.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
-                    .data("username", receiver)
+                    .data("address", receiver)
                     .post();
             if (doc.text().startsWith("Success")) token = doc.text().replace("Sucecess$$$$", "");
             else return false;
 
-            String json = "{ \"data\" : { \"title\" : \"\", \"nick\" : \"" + nickname + "\", \"body\" : \"" + "" + "\",\"type\" : \"" + type + "\" }, \"to\" : \"" + token + "\"}";
+            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\",\"type\" : \"" + type + "\" }, \"to\" : \"" + token + "\"}";
             URL url = null;
             String line;
             String res = "";
@@ -74,15 +74,5 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
             Toast.makeText(mContext, "Message has successfully sent", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(mContext, "Message send failed", Toast.LENGTH_SHORT).show();
-
-        Intent intent;
-        if (type.equals("first"))
-            intent = new Intent(QuickstartPreferences.FIRST_MSG_SENT);
-        else
-            intent = new Intent(QuickstartPreferences.SECOND_MSG_SENT);
-        intent.putExtra("to_nick", receiver);
-        LocalBroadcastManager.getInstance(mContext)
-                .sendBroadcast(intent);
-        Log.d(TAG, "Broadcast sent - type :" + type);
     }
 }
