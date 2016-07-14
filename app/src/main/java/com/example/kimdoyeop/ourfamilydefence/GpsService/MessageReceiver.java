@@ -1,7 +1,5 @@
 package com.example.kimdoyeop.ourfamilydefence.GpsService;
 
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;

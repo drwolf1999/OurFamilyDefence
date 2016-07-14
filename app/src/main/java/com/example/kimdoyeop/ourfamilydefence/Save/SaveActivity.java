@@ -1,14 +1,10 @@
 package com.example.kimdoyeop.ourfamilydefence.Save;
 
-import android.content.Context;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kimdoyeop.ourfamilydefence.NoSave.GPSInfo;
 import com.example.kimdoyeop.ourfamilydefence.R;
 
 /**
