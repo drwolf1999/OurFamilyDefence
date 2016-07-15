@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     public static final String TAG = "SendNotiTask";
-    String address, receiver, token, type;
+    String address, receiver,  type;
     Context mContext;
 
     public SendNotiTask(Context mContext, String receiver, String type) {
@@ -40,10 +40,10 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
                     .header("Content-Type", "Application/X-www-form-urlencoded")
                     .data("address", receiver)
                     .post();
-            if (doc.text().startsWith("Success")) token = doc.text().replace("Sucecess$$$$", "");
+            if (doc.text().startsWith("Success")) address = doc.text().replace("Sucecess$$$$", "");
             else return false;
 
-            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\",\"type\" : \"" + type + "\" }, \"to\" : \"" + token + "\"}";
+            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\",\"type\" : \"" + type + "\" }, \"address\" : \"" + address + "\"}";
             URL url = null;
             String line;
             String res = "";

@@ -2,7 +2,10 @@ package com.example.kimdoyeop.ourfamilydefence.NoSave;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
@@ -20,7 +24,7 @@ import java.util.Locale;
 
 public class GPSInfo extends Service implements LocationListener {
 
-    private final NoSaveActivity mcontext;
+    private final Context context;
 
     boolean isGPSEnabled = false;
     boolean isNetWorkEnabled = false;
@@ -38,13 +42,13 @@ public class GPSInfo extends Service implements LocationListener {
     protected LocationManager locationManager;
 
     public GPSInfo(NoSaveActivity context) {
-        this.mcontext = context;
+        this.context = context;
         getLocation();
     }
 
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetWorkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -159,5 +163,31 @@ public class GPSInfo extends Service implements LocationListener {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setTitle("GPS 사용유무셋팅");
+        alertDialog.setMessage("GPS 셋팅이 되지 않았을수도 있습니다.\n 설정창으로 가시겠습니까?");
+
+        // OK 를 누르게 되면 설정창으로 이동합니다.
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                });
+        // Cancle 하면 종료 합니다.
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+
     }
 }

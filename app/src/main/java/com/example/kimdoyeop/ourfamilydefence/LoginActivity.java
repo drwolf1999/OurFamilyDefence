@@ -29,11 +29,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -41,7 +45,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -299,7 +302,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .data("password", mPassword)
                         .post();
 
-                return doc.text().contains("Success");
+                String json = "{ \"data\" : { \"title\" : \"\", \"id\" : \"" + mEmail + "\", \"body\" : \"" + "" + "\",\"password\" : \"" + mPassword + "\" }\"}";
+                URL url = null;
+                String line;
+                String res = "";
+
+                url = new URL("https://fcm.googleapis.com/fcm/send");
+                HttpsURLConnection con = (HttpsURLConnection) (url).openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Authorization", "key=AIzaSyCZg7HzSapxACjkz7FXY1sJl-vrltCiy2s");
+
+                con.setDoOutput(true);
+
+                OutputStreamWriter osw = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
+
+                osw.write(json);
+                osw.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -308,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(Boolean success) {
             if (success) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

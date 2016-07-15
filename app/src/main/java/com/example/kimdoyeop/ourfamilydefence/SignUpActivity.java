@@ -3,6 +3,7 @@ package com.example.kimdoyeop.ourfamilydefence;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -96,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        startService(new Intent(this, IIDListenerSignUp.class));
     }
 
     private void populateAutoComplete() {
@@ -313,14 +315,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // TODO: attempt authentication against a network service.
 
             try {
-                Document doc = Jsoup.connect("http://thy2134.duckdns.org/sign_up.php")
-                        .header("Content-type", "Application/X-www-form-urlencoded")
-                        .data("name", mEmail)
-                        .data("password", mPassword)
-                        .post();
                 Thread.sleep(2000);
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
