@@ -12,20 +12,16 @@ import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 public class NoSaveGPSInfo extends SaveActivity {
 
     GPSInfo gpsInfo;
-    String Lat, Lon, Adr;
     Context context;
     TextView txtLat, txtLon, txtadr;
 
-    public NoSaveGPSInfo(Context context, String lat, String lon, String adr) {
+    public NoSaveGPSInfo(Context context) {
         this.context = context;
-        this.Lat = lat;
-        this.Lon = lon;
-        this.Adr = adr;
         GPSInfoSearch();
     }
 
     private void GPSInfoSearch() {
-        gpsInfo = new GPSInfo(SaveActivity.);
+        gpsInfo = new GPSInfo(SaveActivity.class);
         // GPS 사용유무 가져오기
         if (gpsInfo.isGetLocation()) {
 

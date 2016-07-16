@@ -49,6 +49,7 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search_no_auto:
+                new NoSaveGPSInfo(getApplicationContext());
                 break;
 
             case R.id.save_location:
@@ -91,7 +92,6 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
     public class UploadsGPSInfo extends BroadcastReceiver implements Runnable {
 
         Context context;
-        GPSInfo gpsInfo;
 
         public UploadsGPSInfo(Context context) {
             this.context = context;
@@ -114,7 +114,7 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void run() {
             while (true) {
-                new NoSaveGPSInfo(getApplicationContext(), txtLat.getText().toString(), txtLon.getText().toString(), txtadr.getText().toString());
+                new NoSaveGPSInfo(getApplicationContext());
                 try {
                     Thread.sleep(1000 * 10);
                 } catch (InterruptedException e) {
