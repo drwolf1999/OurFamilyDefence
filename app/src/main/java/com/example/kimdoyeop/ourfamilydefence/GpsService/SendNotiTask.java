@@ -8,6 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.kimdoyeop.ourfamilydefence.Save.QuickstartPreferences;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -22,14 +24,13 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     public static final String TAG = "SendNotiTask";
-    String address, receiver,  type;
-    Context mContext;
+    String address, location;
+    Context context;
 
-    public SendNotiTask(Context mContext, String receiver, String type) {
-        this.mContext = mContext;
-        this.receiver = receiver;
-        this.type = type;
-        SharedPreferences prefs = mContext.getSharedPreferences("Token", mContext.MODE_PRIVATE);
+    public SendNotiTask(Context context, String location) {
+        this.context = context;
+        this.location = location;
+        SharedPreferences prefs = context.getSharedPreferences("Token", context.MODE_PRIVATE);
         address = prefs.getString("Address", "");
     }
 
@@ -38,12 +39,12 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
         try {
             Document doc = Jsoup.connect("http://thy2134.duckdns.org/get_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
-                    .data("address", receiver)
+                    .data("address", location)
                     .post();
             if (doc.text().startsWith("Success")) address = doc.text().replace("Sucecess$$$$", "");
             else return false;
 
-            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\",\"type\" : \"" + type + "\" }, \"address\" : \"" + address + "\"}";
+            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\" }, \"address\" : \"" + address + "\"}";
             URL url = null;
             String line;
             String res = "";
@@ -71,8 +72,14 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         if (aBoolean)
-            Toast.makeText(mContext, "Message has successfully sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Message has successfully sent", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(mContext, "Message send failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Message send failed", Toast.LENGTH_SHORT).show();
+
+        Intent intent;
+        intent = new Intent(QuickstartPreferences.ADR_SENT);
+        LocalBroadcastManager.getInstance(context)
+                .sendBroadcast(intent);
+        intent.putExtra("to_location", location);
     }
 }

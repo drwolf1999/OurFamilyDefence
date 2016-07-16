@@ -23,6 +23,4 @@ public class IIDListenerSignUp extends FirebaseInstanceIdService {
         editor.apply();
         new TokenUploadTaskSign(getApplicationContext(), prefs.getString("Id", "")).execute();
     }
-
-
 }

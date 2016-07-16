@@ -1,4 +1,4 @@
-package com.example.kimdoyeop.ourfamilydefence.NoSave;
+package com.example.kimdoyeop.ourfamilydefence.Save;
 
 
 import android.Manifest;
@@ -41,7 +41,7 @@ public class GPSInfo extends Service implements LocationListener {
 
     protected LocationManager locationManager;
 
-    public GPSInfo(NoSaveActivity context) {
+    public GPSInfo(SaveActivity context) {
         this.context = context;
         getLocation();
     }
@@ -186,8 +186,6 @@ public class GPSInfo extends Service implements LocationListener {
                         dialog.cancel();
                     }
                 });
-
         alertDialog.show();
-
     }
 }

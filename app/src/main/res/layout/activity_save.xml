@@ -32,13 +32,90 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="상태" />
+        android:text="위치는"
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/label_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/addressView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/save_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9" />
+
+        <Button
+            android:id="@+id/save_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="안전구역 설정" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소는??"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/adress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="25dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="위도"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="경도"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/lon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="탐색" />
 
 </LinearLayout>

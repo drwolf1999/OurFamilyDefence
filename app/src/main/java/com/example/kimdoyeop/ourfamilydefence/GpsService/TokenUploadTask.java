@@ -16,16 +16,16 @@ import java.io.IOException;
  * Created by 유닛소프트 on 2016-07-12.
  */
 public class TokenUploadTask extends AsyncTask<Void, Void, String> {
-    String self, token;
+    String address, token;
     Context mContext;
 
-    public TokenUploadTask(Context mContext, String self) {
+    public TokenUploadTask(Context mContext, String address) {
         this.mContext = mContext;
-        this.self = self;
+        this.address = address;
         SharedPreferences prefs = mContext.getSharedPreferences("Token", mContext.MODE_PRIVATE);
         token = FirebaseInstanceId.getInstance().getToken();
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Address", self);
+        editor.putString("Address", address);
         editor.apply();
     }
 
@@ -35,7 +35,7 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
             Document doc = Jsoup.connect("http://thy2134.duckdns.org/input_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
                     .data("token", token)
-                    .data("self", self)
+                    .data("address", address)
                     .post();
 
             return doc.text();

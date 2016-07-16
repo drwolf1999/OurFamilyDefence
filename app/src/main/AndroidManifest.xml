@@ -37,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NoSave.NoSaveActivity" />
         <activity android:name=".Save.SaveActivity" />
         <activity
             android:name=".SignUpActivity"
@@ -67,6 +66,12 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
+        </service>
+
+        <service
+            android:name=".Save.GPSInfo"
+            android:exported="false">
+
         </service>
 
         <uses-library android:name="com.google.android.maps" />

@@ -1,7 +1,11 @@
 package com.example.kimdoyeop.ourfamilydefence.GpsService;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.kimdoyeop.ourfamilydefence.Save.QuickstartPreferences;
+import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -13,18 +17,19 @@ public class MessageReceiver extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        String address = remoteMessage.getData().get("address");
-        String type = remoteMessage.getData().get("type");
+        String location = remoteMessage.getData().get("location");
 
         Log.d(TAG, "MESSAGE RECEIVED");
-        Log.d(TAG, "type : " + type);
 
-        sendNotification(address, type);
+        Intent intent;
+        intent = new Intent(QuickstartPreferences.ADR_RECEIVED);
+        intent.putExtra("from_address", location);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+        sendNotification(location);
     }
 
-    private void sendNotification(String address, String type) {
-        if (type.equals("first")) {
-            new SendNotiTask(getApplicationContext(), address, "next").execute();
-        }
+    private void sendNotification(String address) {
+            new SendNotiTask(getApplicationContext(), address).execute();
     }
 }

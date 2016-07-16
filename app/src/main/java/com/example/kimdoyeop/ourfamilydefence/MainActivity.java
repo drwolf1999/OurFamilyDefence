@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.kimdoyeop.ourfamilydefence.NoSave.NoSaveActivity;
 import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,11 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.save:
                 Intent intent = new Intent(this, SaveActivity.class);
                 startActivity(intent);
-                break;
-
-            case R.id.no_save:
-                Intent intent1 = new Intent(this, NoSaveActivity.class);
-                startActivity(intent1);
                 break;
 
             default:
