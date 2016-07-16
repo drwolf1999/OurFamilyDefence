@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kimdoyeop.ourfamilydefence.GpsService.IIDListener;
+import com.example.kimdoyeop.ourfamilydefence.GpsService.NoSaveGPSInfo;
 import com.example.kimdoyeop.ourfamilydefence.GpsService.SendNotiTask;
 import com.example.kimdoyeop.ourfamilydefence.GpsService.TokenUploadTask;
 import com.example.kimdoyeop.ourfamilydefence.R;
@@ -30,22 +31,6 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save);
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                switch (action) {
-                    case QuickstartPreferences.ADR_SENT:
-                        mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Sent. TO : " + intent.getStringExtra("to_nick") + "\n");
-                        break;
-                    case QuickstartPreferences.ADR_RECEIVED:
-                        mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Received. FROM : " + intent.getStringExtra("from_nick") + "\n");
-                        break;
-                }
-            }
-        };
-
         findViewById(R.id.search_no_auto).setOnClickListener(this);
         findViewById(R.id.save_location).setOnClickListener(this);
         findViewById(R.id.search).setOnClickListener(this);
@@ -115,34 +100,25 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            //
+            String action = intent.getAction();
+            switch (action) {
+                case QuickstartPreferences.ADR_SENT:
+                    mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Sent. TO : " + intent.getStringExtra("to_nick") + "\n");
+                    break;
+                case QuickstartPreferences.ADR_RECEIVED:
+                    mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Received. FROM : " + intent.getStringExtra("from_nick") + "\n");
+                    break;
+            }
         }
 
         @Override
         public void run() {
             while (true) {
-                gpsInfo = new GPSInfo(SaveActivity.this);
-                // GPS 사용유무 가져오기
-                if (gpsInfo.isGetLocation()) {
-
-                    double latitude = gpsInfo.getLatitude();
-                    double longitude = gpsInfo.getLongitude();
-                    String address = gpsInfo.getAddress(latitude, longitude);
-
-                    txtLat.setText(String.valueOf(latitude));
-                    txtLon.setText(String.valueOf(longitude));
-                    txtadr.setText(String.valueOf(address));
-
-                    new TokenUploadTask(context, txtadr.getText().toString()).execute();
-                    new SendNotiTask(getApplicationContext(), txtadr.getText().toString()).execute();
-                    try {
-                        Thread.sleep(1000 * 10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gpsInfo.showSettingsAlert();
+                new NoSaveGPSInfo(getApplicationContext(), txtLat.getText().toString(), txtLon.getText().toString(), txtadr.getText().toString());
+                try {
+                    Thread.sleep(1000 * 10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
