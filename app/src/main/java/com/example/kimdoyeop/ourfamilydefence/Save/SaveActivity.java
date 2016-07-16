@@ -23,7 +23,7 @@ import com.example.kimdoyeop.ourfamilydefence.R;
  */
 public class SaveActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView mInformationTextView, txtLat, txtLon, txtadr;
+    TextView InformationTextView, txtLat, txtLon, txtadr;
     EditText save_adr;
     BroadcastReceiver mRegistrationBroadcastReceiver;
 
@@ -39,7 +39,7 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
         txtLat = (TextView) findViewById(R.id.lat);
         txtadr = (TextView) findViewById(R.id.address);
 
-        mInformationTextView = (TextView) findViewById(R.id.label_address);
+        InformationTextView = (TextView) findViewById(R.id.label_address);
         startService(new Intent(this, IIDListener.class));
         startService(new Intent(this, SendNotiTask.class));
         startService(new Intent(this, UploadsGPSInfo.class));
@@ -103,10 +103,10 @@ public class SaveActivity extends AppCompatActivity implements View.OnClickListe
             String action = intent.getAction();
             switch (action) {
                 case QuickstartPreferences.ADR_SENT:
-                    mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Sent. TO : " + intent.getStringExtra("to_nick") + "\n");
+                    InformationTextView.setText(InformationTextView.getText().toString() + "Address Sent. TO : " + intent.getStringExtra("to_nick") + "\n");
                     break;
                 case QuickstartPreferences.ADR_RECEIVED:
-                    mInformationTextView.setText(mInformationTextView.getText().toString() + "Address Received. FROM : " + intent.getStringExtra("from_nick") + "\n");
+                    InformationTextView.setText(InformationTextView.getText().toString() + "Address Received. FROM : " + intent.getStringExtra("from_nick") + "\n");
                     break;
             }
         }
