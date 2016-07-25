@@ -17,7 +17,7 @@ public class MessageReceiver extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        String location = remoteMessage.getData().get("location");
+        String location = remoteMessage.getData().get("address");
 
         Log.d(TAG, "MESSAGE RECEIVED");
 

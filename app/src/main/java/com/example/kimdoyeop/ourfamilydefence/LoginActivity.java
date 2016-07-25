@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -24,9 +25,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.kimdoyeop.ourfamilydefence.Save.SaveActivity;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -44,7 +49,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextView.OnEditorActionListener {
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -63,36 +68,73 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private AutoCompleteTextView IDView;
+    private EditText PasswordView;
+    private View ProgressView;
+    private View LoginFormView;
+    String regist;
+
+    public SharedPreferences prefs;
+    public SharedPreferences.Editor editor;
+    CheckBox Auto, CheckSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.ID);
+        IDView = (AutoCompleteTextView) findViewById(R.id.ID);
         populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
+        PasswordView = (EditText) findViewById(R.id.password);
+        PasswordView.setOnClickListener(this);
+        CheckSave = (CheckBox) findViewById(R.id.check_save);
+        Auto = (CheckBox) findViewById(R.id.check_log);
+        Auto.setOnCheckedChangeListener(this);
+        CheckSave.setOnCheckedChangeListener(this);
         findViewById(R.id.ID_sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_up).setOnClickListener(this);
+        LoginFormView = findViewById(R.id.login_form);
+        ProgressView = findViewById(R.id.login_progress);
+        prefs = getSharedPreferences("setting", 0);
+        editor = prefs.edit();
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        if (prefs.getBoolean("Auto_Login_enabled", false)) {
+            IDView.setText(prefs.getString("ID", ""));
+            PasswordView.setText(prefs.getString("PW", ""));
+            Auto.setChecked(true);
+        }
+
+        if (Auto.isChecked()) {
+            attemptLogin();
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        switch (compoundButton.getId()) {
+            case R.id.check_log:
+                // TODO Auto-generated method stub
+                if (isChecked) {
+                    String ID = IDView.getText().toString();
+                    String PW = PasswordView.getText().toString();
+
+                    editor.putString("ID", ID);
+                    editor.putString("PW", PW);
+                    editor.putBoolean("Auto_Login_enabled", true);
+                    editor.apply();
+                } else {
+                    editor.clear();
+                    editor.apply();
+                }
+                break;
+            case R.id.check_save:
+                boolean save = false;
+                if (isChecked) {
+                    save = true;
+                }
+                editor.putBoolean("is_save", save);
+                editor.apply();
+        }
     }
 
     private void populateAutoComplete() {
@@ -111,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(IDView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -150,12 +192,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        IDView.setError(null);
+        PasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = IDView.getText().toString();
+        String password = PasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -173,6 +215,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    public static void OverLap(String ID, String Password) {
+    }
+
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -184,28 +229,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            LoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            LoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    LoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            ProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            LoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -249,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        IDView.setAdapter(adapter);
     }
 
     @Override
@@ -266,6 +311,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    @Override
+    public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+        if (id == R.id.login || id == EditorInfo.IME_NULL) {
+            attemptLogin();
+            return true;
+        }
+        return false;
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -283,26 +336,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mID;
         private final String mPassword;
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
+            mID = email;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            prefs = getApplicationContext().getSharedPreferences("Token", getApplicationContext().MODE_PRIVATE);
+            editor = prefs.edit();
             try {
                 Document doc = Jsoup.connect("http://thy2134.duckdns.org/db_login1.php")
                         .header("Content-type", "Application/X-www-form-urlencoded")
-                        .data("name", mEmail)
+                        .data("name", mID)
                         .data("password", mPassword)
                         .post();
+                if (doc.text().startsWith("Success")) {
+                    regist = doc.text().replace("Success$$$$", "");
+                    editor.putString("id", mID);
+                    editor.putString("pw", mPassword);
+                    editor.apply();
+                } else return false;
 
-                String json = "{ \"data\" : { \"title\" : \"\", \"id\" : \"" + mEmail + "\", \"body\" : \"" + "" + "\",\"password\" : \"" + mPassword + "\" }\"}";
+
+                String json = "{ \"data\" : { \"title\" : \"\", \"id\" : \"" + mID + "\",\"password\" : \"" + mPassword + "\" }\"}";
                 URL url = null;
                 String line;
                 String res = "";
@@ -328,12 +389,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onPostExecute(Boolean success) {
+            Intent intent;
             if (success) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent = new Intent(LoginActivity.this, SaveActivity.class);
                 startActivity(intent);
                 finish();
             } else {
                 Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_SHORT).show();
+                editor.putBoolean("Auto_Login_enabled", false);
+                editor.apply();
+                intent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
 

@@ -25,6 +25,6 @@ public class IIDListener extends FirebaseInstanceIdService {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("TOKEN", token);
         editor.apply();
-        new TokenUploadTask(getApplicationContext(), prefs.getString("Address", "")).execute();
+        new TokenUploadTask(getApplicationContext(), prefs.getString("address", "")).execute();
     }
 }

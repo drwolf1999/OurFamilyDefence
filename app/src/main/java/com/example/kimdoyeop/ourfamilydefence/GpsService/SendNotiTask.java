@@ -24,14 +24,18 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
     public static final String TAG = "SendNotiTask";
-    String address, location;
+    String address, location, ID, password;
     Context context;
+    SharedPreferences prefs;
 
     public SendNotiTask(Context context, String location) {
         this.context = context;
         this.location = location;
-        SharedPreferences prefs = context.getSharedPreferences("Token", context.MODE_PRIVATE);
-        address = prefs.getString("Address", "");
+        Log.d(TAG, "loc" + location);
+        prefs = context.getSharedPreferences("Token", context.MODE_PRIVATE);
+        address = prefs.getString("address", "");
+        ID = prefs.getString("id", "");
+        password = prefs.getString("pw", "");
     }
 
     @Override
@@ -39,12 +43,14 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
         try {
             Document doc = Jsoup.connect("http://thy2134.duckdns.org/get_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
-                    .data("address", location)
+                    .data("id", ID)
+                    .data("password", password)
                     .post();
-            if (doc.text().startsWith("Success")) address = doc.text().replace("Sucecess$$$$", "");
+            if (doc.text().startsWith(prefs.getString("Save", "")))
+                address = doc.text().replace("Sucecess$$$$", "");
             else return false;
 
-            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\" }, \"address\" : \"" + address + "\"}";
+            String json = "{ \"data\" : { \"title\" : \"\", \"adr\" : \"" + address + "\", \"body\" : \"" + "" + "\" }, \"location\" : \"" + location + "\"}";
             URL url = null;
             String line;
             String res = "";
@@ -78,8 +84,7 @@ public class SendNotiTask extends AsyncTask<Void, Void, Boolean> {
 
         Intent intent;
         intent = new Intent(QuickstartPreferences.ADR_SENT);
-        LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(intent);
-        intent.putExtra("to_location", location);
+        intent.putExtra("to_address", location);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 }

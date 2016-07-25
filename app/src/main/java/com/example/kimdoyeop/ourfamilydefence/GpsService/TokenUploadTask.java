@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by 유닛소프트 on 2016-07-12.
  */
 public class TokenUploadTask extends AsyncTask<Void, Void, String> {
-    String address, token;
+    String address, token, ID, password;
     Context mContext;
 
     public TokenUploadTask(Context mContext, String address) {
@@ -25,8 +25,11 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
         SharedPreferences prefs = mContext.getSharedPreferences("Token", mContext.MODE_PRIVATE);
         token = FirebaseInstanceId.getInstance().getToken();
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Address", address);
+        editor.putString("address", address);
         editor.apply();
+        SharedPreferences pref = mContext.getSharedPreferences("setting", mContext.MODE_PRIVATE);
+        ID = pref.getString("id", "");
+        password = pref.getString("pw", "");
     }
 
     @Override
@@ -34,7 +37,8 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
         try {
             Document doc = Jsoup.connect("http://thy2134.duckdns.org/input_location_db.php")
                     .header("Content-Type", "Application/X-www-form-urlencoded")
-                    .data("token", token)
+                    .data("id", ID)
+                    .data("password", password)
                     .data("address", address)
                     .post();
 
@@ -48,14 +52,14 @@ public class TokenUploadTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String aString) {
         String content = "";
-        switch(aString) {
-            case "Success" :
+        switch (aString) {
+            case "Success":
                 content = "Successfully uploaded token to server. You may get push notification from server now.";
                 break;
-            case "DUPLICATE" :
+            case "DUPLICATE":
                 content = "Same key already exists on server. How about trying another one?";
                 break;
-            default :
+            default:
                 content = "Failed to upload token to server. Check your internet connection.";
                 break;
         }
